@@ -1,10 +1,10 @@
-# GPMDP-Output
+# ytmd-obs-output
 
 [Open Broadcaster Software (OBS)](https://obsproject.com/) streaming helper for [YouTube Music Desktop](https://ytmdesktop.app/).
 
 Listens to the Playback interface of YTMD and outputs formatted track information and album art files which can be consumed by OBS.
 
-Very simple script, but it's handy for streaming currently played song from GPMDP and it doesn't require configuration unless you want to customize the output.
+Handy for streaming currently played song from YTMD and doesn't require configuration unless you want to customize the output.
 
 ## Features
 
@@ -30,7 +30,7 @@ If you have prior Node.js experience, this should be no problem. If you don't, I
 5. Execute the `ytmd_output.bat` file (Windows) or `ytmd_output.sh` file (Linux / macOS). You should be able to do that by double-clicking it.
 6. To close the script, use CTRL+C or close the command prompt window.
 
-Steps 1 - 4 only have to be done once. After that, simply execute the relevant `ytmd_output` file and let it run while GPMDP and your streaming application are open.
+Steps 1 - 4 only have to be done once. After that, simply execute the relevant `ytmd_output` file and let it run while YTMD and your streaming application are open.
 
 ## Adding the output to OBS Studio
 

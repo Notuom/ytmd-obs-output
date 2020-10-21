@@ -1,0 +1,9 @@
+{
+  "ytmdRemoteUrl": "http://localhost:9863/query",
+  "outputPattern": "%author%\n%title%\n%album%",
+  "albumArtWidth": 500,
+  "albumArtHeight": 500,
+  "trackFilePath": "Current_Track.txt",
+  "albumArtFilePath": "Current_Album_Art.png",
+  "pollIntervalMs": 1000
+}

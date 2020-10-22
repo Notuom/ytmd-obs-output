@@ -50,7 +50,7 @@ Default: `http://localhost:9863/query`
 
 ### `outputPattern`
 
-The pattern to use when writing the current track information. You can either use symbols that will be replaced by the track information or plain text that will be left as-is.
+The pattern to use when writing the current track information. You can both use symbols that will be replaced by the track information and plain text that will be left as-is. Example: `Track: %title% by %author%` would output `Track: Never Gonna Give You Up by Rick Astley`.
 
 Valid symbols : `%title%`, `%author%`, `%album%`. Use `\n` to insert a line break.
 

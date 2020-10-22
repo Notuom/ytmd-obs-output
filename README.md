@@ -15,7 +15,7 @@ Handy for streaming currently played song from YTMD and doesn't require configur
   * Customizable resolution
 * Easy to use! (kinda... 😉)
 
-## Setting up Google Play Music Desktop Player
+## Setting up YouTube Music Desktop App
 
 Before using the script, you should make sure the YTMD remote control API is enabled. [See the official docs for more details](https://github.com/ytmdesktop/ytmdesktop/wiki/Remote-Control-API) (Settings -> Integrations -> Remote Control). Also, make sure your firewall is configured properly by allowing access to Node.js and YTMD if they ask for it (this will vary based on the OS but most likely it will happen).
 

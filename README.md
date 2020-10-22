@@ -50,7 +50,7 @@ Default: `http://localhost:9863/query`
 
 ### `outputPattern`
 
-The pattern to use when writing the current track information
+The pattern to use when writing the current track information. You can either use symbols that will be replaced by the track information or plain text that will be left as-is.
 
 Valid symbols : `%title%`, `%author%`, `%album%`. Use `\n` to insert a line break.
 

@@ -4,6 +4,8 @@ const fs = require("fs");
 const Jimp = require("jimp");
 const axios = require("axios");
 
+const INVALID_COVERS = ["", "https://music.youtube.com/"];
+
 const {
   ytmdRemoteUrl,
   outputPattern,
@@ -64,13 +66,17 @@ const writeTrackFile = ({ author, title, album }) => {
 
 const resizeAlbumCover = () => {
   Jimp.read(albumArtTmpFilePath, (error, image) => {
-    if (error)
+    if (error) {
       console.error(
-        `Error: Could not read ${albumArtTmpFilePath} when resizing.`,
+        `- Error: Could not read ${albumArtTmpFilePath} when resizing. Removing cover file.`,
         error
       );
-    image.contain(albumArtWidth, albumArtHeight).write(albumArtFilePath);
-    console.log(`- Cover resized to ${albumArtFilePath}.`);
+      removeFile(albumArtTmpFilePath);
+      removeFile(albumArtFilePath);
+    } else if (image) {
+      image.contain(albumArtWidth, albumArtHeight).write(albumArtFilePath);
+      console.log(`- Cover resized to ${albumArtFilePath}.`);
+    }
   });
 };
 
@@ -81,11 +87,12 @@ const downloadAlbumCover = async ({ cover }) => {
     response.data
       .pipe(fs.createWriteStream(albumArtTmpFilePath))
       .on("error", (error) => {
-        if (error)
+        if (error) {
           console.error(
             `Error: Could not write ${albumArtTmpFilePath} when downloading.`,
             error
           );
+        }
       })
       .on("finish", () => {
         console.log(`- Cover downloaded to ${albumArtTmpFilePath}.`);
@@ -108,9 +115,11 @@ const outputTrackInfo = ({ author, title, album, cover }) => {
     removeFile(trackFilePath);
   }
 
-  if (currentTrack.cover !== "") {
+  if (!INVALID_COVERS.includes(currentTrack.cover)) {
+    console.log("- Downloading cover...");
     downloadAlbumCover(currentTrack);
   } else {
+    console.log("- Invalid cover. Removing cover file.");
     removeFile(albumArtTmpFilePath);
     removeFile(albumArtFilePath);
   }

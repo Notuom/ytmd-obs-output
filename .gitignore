@@ -1,3 +1,5 @@
-Current_Album_Art.*
-Current_Track.txt
+.DS_Store
 node_modules
+
+*.png
+*.txt

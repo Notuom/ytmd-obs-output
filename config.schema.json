@@ -1,0 +1,90 @@
+{
+  "$id": "http://notuom.com/ytmd-obs-output/config.json",
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "default": {},
+  "description": "https://github.com/Notuom/ytmd-obs-output",
+  "examples": [
+    {
+      "albumArtFilePath": "Current_Album_Art.png",
+      "albumArtHeight": 500,
+      "albumArtWidth": 500,
+      "outputPattern": "%author%\n%title%\n%album%",
+      "pollIntervalMs": 1000,
+      "trackFilePath": "Current_Track.txt",
+      "ytmdRemoteUrl": "http://localhost:9863/query"
+    }
+  ],
+  "required": [
+    "albumArtFilePath",
+    "albumArtHeight",
+    "albumArtWidth",
+    "outputPattern",
+    "pollIntervalMs",
+    "trackFilePath",
+    "ytmdRemoteUrl"
+  ],
+  "title": "ytmd-obs-output config.json schema",
+  "type": "object",
+  "properties": {
+    "albumArtFilePath": {
+      "$id": "#/properties/albumArtFilePath",
+      "default": "Current_Album_Art.png",
+      "description": "The file path where to write the text file containing the album art. You can specify an absolute path in order to write it to a folder different from the script's location.",
+      "examples": ["Current_Album_Art.png"],
+      "title": "The file path where to write the text file containing the album art",
+      "type": "string"
+    },
+    "albumArtHeight": {
+      "$id": "#/properties/albumArtHeight",
+      "default": 500,
+      "description": "The height of the album art to output in pixels.",
+      "examples": [500],
+      "title": "The height of the album art to output in pixels",
+      "type": "integer"
+    },
+    "albumArtWidth": {
+      "$id": "#/properties/albumArtWidth",
+      "default": 500,
+      "description": "The width of the album art to output in pixels.",
+      "examples": [500],
+      "title": "The width of the album art to output in pixels",
+      "type": "integer"
+    },
+    "outputPattern": {
+      "$id": "#/properties/outputPattern",
+      "default": "%author%\n%title%\n%album%",
+      "description": "The pattern(s) to use when writing the current track information. You can both use symbols that will be replaced by the track information and plain text that will be left as-is. Valid symbols : `%title%`, `%author%`, `%album%`. Use `\n` to insert a line break. You can also provide an array of strings, in which case each pattern will be written in a different file (you would then need to provide an array of filenames in the trackFilePath option)",
+      "examples": [
+        "%author%\n%title%\n%album%",
+        ["track file 1: %author%", "track file 2: %title% (%album%)"]
+      ],
+      "title": "The pattern(s) to use when writing the current track information",
+      "anyOf": [{"type": "string"}, {"type": "array", "items": {"type": "string"}}]
+    },
+    "pollIntervalMs": {
+      "$id": "#/properties/pollIntervalMs",
+      "default": 1000,
+      "description": "The interval between each request the script will make to the YTMD Remote API in milliseconds.",
+      "examples": [1000],
+      "title": "The interval between each request the script will make to the YTMD Remote API in milliseconds",
+      "type": "integer"
+    },
+    "trackFilePath": {
+      "$id": "#/properties/trackFilePath",
+      "default": "Current_Track.txt",
+      "description": "The file path where to write the text file containing the track information. You can specify an absolute path in order to write it to a folder different from the script's location. You can also provide an array of strings in order to write track information in multiple files (you would then need provide an array of patterns for the outputPattern option).",
+      "examples": ["Current_Track.txt", ["track1.txt", "track2.txt"]],
+      "title": "The file path where to write the text file containing the track information",
+      "anyOf": [{"type": "string"}, {"type": "array", "items": {"type": "string"}}]
+    },
+    "ytmdRemoteUrl": {
+      "$id": "#/properties/ytmdRemoteUrl",
+      "default": "http://localhost:9863/query",
+      "description": "Full URL to the YTMD Remote API.",
+      "examples": ["http://localhost:9863/query"],
+      "title": "Full URL to the YTMD Remote API",
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

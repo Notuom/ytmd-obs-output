@@ -3,8 +3,21 @@
 const fs = require("fs");
 const Jimp = require("jimp");
 const axios = require("axios");
+const Ajv = require("ajv");
 
 const INVALID_COVERS = ["", "https://music.youtube.com/"];
+
+const schema = require("./config.schema");
+const config = require("./config");
+
+const validate = new Ajv().compile(schema);
+const isConfigValid = validate(config);
+
+if (!isConfigValid) {
+  console.error("config.json is not valid. The errors below need to be fixed.");
+  console.error(validate.errors);
+  process.exit(1);
+}
 
 const {
   ytmdRemoteUrl,
@@ -14,9 +27,35 @@ const {
   trackFilePath,
   albumArtFilePath,
   pollIntervalMs,
-} = require("./config");
+} = config;
 
 const albumArtTmpFilePath = `${albumArtFilePath}.tmp`;
+
+// Compute multiple outputs safely; limit to the min number of specified files between outputPattern and trackFilePath
+const getFilePatterns = () => {
+  const effectiveTrackFilePaths = Array.isArray(trackFilePath)
+    ? trackFilePath
+    : [trackFilePath];
+  const effectiveOutputPatterns = Array.isArray(outputPattern)
+    ? outputPattern
+    : [outputPattern];
+  const filePatterns = [];
+  for (
+    let i = 0;
+    i <
+    Math.min(effectiveTrackFilePaths.length, effectiveOutputPatterns.length);
+    i++
+  ) {
+    filePatterns.push({
+      path: effectiveTrackFilePaths[i],
+      pattern: effectiveOutputPatterns[i],
+    });
+  }
+
+  return filePatterns;
+};
+
+const filePatterns = getFilePatterns();
 
 console.log(
   `ytmd-obs-output started. Polling interval is ${pollIntervalMs}ms.`
@@ -47,20 +86,22 @@ const removeFile = (filePath) => {
 };
 
 const writeTrackFile = ({ author, title, album }) => {
-  const outputText = outputPattern
-    .replace(/%author%/gi, author)
-    .replace(/%title%/gi, title)
-    .replace(/%album%/gi, album);
+  filePatterns.forEach(({ path, pattern }) => {
+    const outputText = pattern
+      .replace(/%author%/gi, author)
+      .replace(/%title%/gi, title)
+      .replace(/%album%/gi, album);
 
-  fs.writeFile(trackFilePath, outputText, (error) => {
-    if (error) {
-      console.error(
-        `Error: Could not write ${trackFilePath}. Check permissions and disk space.`,
-        error
-      );
-    } else {
-      console.log(`- Track written to ${trackFilePath}.`);
-    }
+    fs.writeFile(path, outputText, (error) => {
+      if (error) {
+        console.error(
+          `Error: Could not write ${path}. Check permissions and disk space.`,
+          error
+        );
+      } else {
+        console.log(`- Track written to ${path}.`);
+      }
+    });
   });
 };
 
@@ -136,8 +177,7 @@ setInterval(async () => {
     }
   } catch (error) {
     console.error(
-      `Error ${error.code}: ${error.message}. Check that YTMDesktop Remote API is running and your firewall is configured properly.`,
-      error
+      `Error ${error.code}: ${error.message}. Check that YTMDesktop Remote API is running and your firewall is configured properly.`
     );
   }
 }, pollIntervalMs);

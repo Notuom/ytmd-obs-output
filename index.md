@@ -42,45 +42,7 @@ To add the album art, add a new Image source and select the Current_Album_Art.pn
 
 Open the config.json file in a text editor in order to change settings. Here are all the available settings.
 
-### `ytmdRemoteUrl`
-
-Full URL to the YTMD Remote API.
-
-Default: `http://localhost:9863/query`
-
-### `outputPattern`
-
-The pattern to use when writing the current track information. You can both use symbols that will be replaced by the track information and plain text that will be left as-is. Example: `Track: %title% by %author%` would output `Track: Never Gonna Give You Up by Rick Astley`.
-
-Valid symbols : `%title%`, `%author%`, `%album%`. Use `\n` to insert a line break.
-
-Default: `%author%\n%title%\n%album%`
-
-**Note:** When the track played is a YouTube video, the album will be empty.
-
-### `albumArtWidth`
-
-The width of the album art to output in pixels.
-
-Default: `500`
-
-**Note:** When the track played is a YouTube video, the cover art won't be square, but it will be resized to fit within the maximum given width and height.
-
-### `albumArtHeight`
-
-The height of the album art to output in pixels.
-
-Default: `500`
-
-**Note:** When the track played is a YouTube video, the cover art won't be square, but it will be resized to fit within the maximum given width and height.
-
-### `trackFilePath`
-
-The file path where to write the text file containing the track information.
-
-You can specify an absolute path in order to write it to a folder different from the script's location.
-
-Default: `Current_Track.txt`
+**Note:** You can also look at the config.schema.json which contains the JSON schema for config.json. The config.json file will be validated against the schema before the script starts and any errors will be listed.
 
 ### `albumArtFilePath`
 
@@ -92,11 +54,55 @@ You can specify an absolute path in order to write it to a folder different from
 
 Default: `Current_Album_Art.png`
 
+### `albumArtHeight`
+
+The height of the album art to output in pixels.
+
+Default: `500`
+
+**Note:** When the track played is a YouTube video, the cover art won't be square, but it will be resized to fit within the maximum given width and height.
+
+### `albumArtWidth`
+
+The width of the album art to output in pixels.
+
+Default: `500`
+
+**Note:** When the track played is a YouTube video, the cover art won't be square, but it will be resized to fit within the maximum given width and height.
+
+### `outputPattern`
+
+The pattern to use when writing the current track information. You can both use symbols that will be replaced by the track information and plain text that will be left as-is. Example: `Track: %title% by %author%` would output `Track: Never Gonna Give You Up by Rick Astley`.
+
+You can also provide an array of strings, in which case each pattern will be written in a different file (you would then need to provide an array of filenames in the trackFilePath option). Example: `["File 1: %author%", "File 2: %title% (%album%)"]`
+
+Valid symbols : `%title%`, `%author%`, `%album%`. Use `\n` to insert a line break.
+
+Default: `%author%\n%title%\n%album%`
+
+**Note:** When the track played is a YouTube video, the album will be empty.
+
 ### `pollIntervalMs`
 
 The interval between each request the script will make to the YTMD Remote API in milliseconds.
 
 Default: `1000`
+
+### `trackFilePath`
+
+The file path where to write the text file containing the track information.
+
+You can specify an absolute path in order to write it to a folder different from the script's location.
+
+Example: `["track1.txt", "track2.txt"]`
+
+Default: `Current_Track.txt`
+
+### `ytmdRemoteUrl`
+
+Full URL to the YTMD Remote API.
+
+Default: `http://localhost:9863/query`
 
 # Special thanks
 

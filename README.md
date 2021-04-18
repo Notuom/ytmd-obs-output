@@ -72,9 +72,13 @@ Default: `500`
 
 ### `outputPattern`
 
-The pattern to use when writing the current track information. You can both use symbols that will be replaced by the track information and plain text that will be left as-is. Example: `Track: %title% by %author%` would output `Track: Never Gonna Give You Up by Rick Astley`.
+The pattern to use when writing the current track information. You can both use symbols that will be replaced by the track information and plain text that will be left as-is. 
 
-You can also provide an array of strings, in which case each pattern will be written in a different file (you would then need to provide an array of filenames in the trackFilePath option). Example: `["File 1: %author%", "File 2: %title% (%album%)"]`
+Example: `Track: %title% by %author%` would output `Track: Never Gonna Give You Up by Rick Astley`.
+
+You can also provide an array of strings, in which case each pattern will be written in a different file (you would then need to provide an array of filenames in the `trackFilePath` option).
+
+Example: `["File 1: %author%", "File 2: %title% (%album%)"]` would output to 2 different files specified in `trackFilePath`.
 
 Valid symbols : `%title%`, `%author%`, `%album%`. Use `\n` to insert a line break.
 
@@ -94,7 +98,11 @@ The file path where to write the text file containing the track information.
 
 You can specify an absolute path in order to write it to a folder different from the script's location.
 
-Example: `["track1.txt", "track2.txt"]`
+Example: `"track.txt"` would output the pattern specified in `outputPattern`.
+
+You can also pass an array of strings in order to output to multiple files.
+
+Example: `["track1.txt", "track2.txt"]` would output 2 different files using the patterns specified in `outputPattern`.
 
 Default: `Current_Track.txt`
 

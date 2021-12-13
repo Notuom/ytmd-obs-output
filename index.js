@@ -27,6 +27,7 @@ const {
   trackFilePath,
   albumArtFilePath,
   pollIntervalMs,
+  removeTrackAfterPausedForMs,
 } = config;
 
 const albumArtTmpFilePath = `${albumArtFilePath}.tmp`;
@@ -62,6 +63,9 @@ console.log(
 );
 
 let currentTrack = {};
+let currentTimeoutAfterPauseMs = 0;
+
+const hasCurrentTrack = () => currentTrack.hasOwnProperty("title");
 
 const hasTrackChanged = ({ author, title, album, cover }) =>
   currentTrack.author !== author ||
@@ -144,6 +148,14 @@ const downloadAlbumCover = async ({ cover }) => {
   }
 };
 
+const removeTrackInfo = () => {
+  currentTrack = {};
+  console.log("- Removing track files...");
+  filePatterns.forEach(({ path }) => removeFile(path));
+  removeFile(albumArtTmpFilePath);
+  removeFile(albumArtFilePath);
+};
+
 const outputTrackInfo = ({ author, title, album, cover }) => {
   console.log("New track detected. Changing track information.");
 
@@ -153,7 +165,7 @@ const outputTrackInfo = ({ author, title, album, cover }) => {
   if (isTrackNonEmpty(currentTrack)) {
     writeTrackFile(currentTrack);
   } else {
-    removeFile(trackFilePath);
+    removeTrackInfo();
   }
 
   if (!INVALID_COVERS.includes(currentTrack.cover)) {
@@ -169,10 +181,27 @@ const outputTrackInfo = ({ author, title, album, cover }) => {
 setInterval(async () => {
   try {
     const {
-      data: { track },
+      data: { player, track },
     } = await axios.get(ytmdRemoteUrl);
 
-    if (hasTrackChanged(track)) {
+    if (removeTrackAfterPausedForMs) {
+      if (!player.hasSong || player.isPaused) {
+        if (hasCurrentTrack()) {
+          currentTimeoutAfterPauseMs += pollIntervalMs;
+          if (currentTimeoutAfterPauseMs >= removeTrackAfterPausedForMs) {
+            console.log(
+              `Track was paused for at least ${removeTrackAfterPausedForMs}ms. Removing track information.`
+            );
+            removeTrackInfo();
+          }
+        }
+      } else {
+        currentTimeoutAfterPauseMs = 0;
+        if (hasTrackChanged(track)) {
+          outputTrackInfo(track);
+        }
+      }
+    } else if (hasTrackChanged(track)) {
       outputTrackInfo(track);
     }
   } catch (error) {

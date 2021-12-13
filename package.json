@@ -4,7 +4,7 @@
     "type": "git",
     "url": "https://github.com/Notuom/ytmd-obs-output"
   },
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "OBS Streaming helper for YouTube Music Desktop App (YTMD). Polls the Remote API from YTMD and outputs formatted track information and cover art for consumption by OBS.",
   "main": "index.js",
   "scripts": {

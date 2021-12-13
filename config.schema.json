@@ -84,6 +84,13 @@
       "examples": ["http://localhost:9863/query"],
       "title": "Full URL to the YTMD Remote API",
       "type": "string"
+    },
+    "removeTrackAfterPausedForMs": {
+      "$id": "#/properties/removeTrackAfterPausedForMs",
+      "description": "How long to wait before clearing out the track info after the player is paused or stopped, in milliseconds.",
+      "examples": [1000],
+      "title": "How long to wait before clearing out the track info after the player is paused or stopped, in milliseconds",
+      "type": "integer"
     }
   },
   "additionalProperties": true

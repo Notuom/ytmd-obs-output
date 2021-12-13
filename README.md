@@ -112,6 +112,14 @@ Full URL to the YTMD Remote API.
 
 Default: `http://localhost:9863/query`
 
+### `removeTrackAfterPausedForMs`
+
+How long to wait before clearing out the track info after the player is paused or stopped, in milliseconds.
+
+Example: If set to `3000` and the track gets paused for at least 3 seconds (exact timing depends on the polling interval), the track file and cover art will be deleted. 
+
+Default: `undefined`
+
 # Special thanks
 
 Special thanks to YTMD for the awesome application and easy to use API!
